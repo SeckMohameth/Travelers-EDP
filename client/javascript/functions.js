@@ -19,6 +19,27 @@ asyncFunc()
 
 console.log('End of script')
 
+// Promise with .then
+new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("This is a promise with .then");
+    }, 2000);
+}).then(result => {
+    console.log(result);
+});
+
+
+//async/await
+async function exampleAsyncAwait() {
+    const result = await new Promise((resolve, _reject) => {
+        setTimeout(()=> {
+            resolve('This is an example of async/await');
+        }, 2000);
+    });
+    console.log(result);
+}
+
+exampleAsyncAwait();
 
 // Fetch data from an API using async/await
 async function fetchData() {
