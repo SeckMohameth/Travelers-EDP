@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import Home from "./Components/Home"
 import About from "./Components/About"
 import Featured from "./Components/Featured"
+import { AuthProvider } from "./hooks/AuthContext"
 import {
   BrowserRouter as Router,
   Route,
@@ -90,11 +91,18 @@ function App() {
            <Featured data={promo_data}/>
             <hr />
             <div className="card-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-            <Routes>
-              <Route exact path="/" element={<Home data={data} handleDelete={handleDelete} />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/addsock" element={<AddSock/>} />
-            </Routes>
+            <AuthProvider>
+              <Routes>
+                  <Route exact path="/" element={<Home data={data} handleDelete={handleDelete} page={page} setPage={setPage} />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/add" element={
+                  <RequireAuth>
+                      <AddSock />
+                  </RequireAuth>
+                  } />
+                  <Route path="/Login" element={<LoginForm />} />
+              </Routes>
+              </AuthProvider>
             </div>
             <footer className={import.meta.env.VITE_ENVIRONMENT === "development" ? "bg-yellow" : import.meta.env.VITE_ENVIRONMENT === "production" ? "bg-green" : ""}>
               <div><strong>{import.meta.env.VITE_ENVIRONMENT.toUpperCase()}</strong></div>

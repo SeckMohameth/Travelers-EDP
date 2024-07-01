@@ -1,6 +1,9 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
+import { useAuth } from '../hooks/AuthContext';
 
-function AddSock() {
+const AddSock = () => {
+    const { user } = useAuth();
+
     const [sockData, setSockData] = useState({
         userId: "",
         sockDetails: {
@@ -10,14 +13,14 @@ function AddSock() {
             material: "",
             condition: "New", // Default set as 'New'
             forFoot: "Left", // Default set as 'Left'
-            },
-            additionalFeatures: {
-                waterResistant: false,
-                padded: false,
-                antiBacterial: false,
-            },
-            addedTimestamp: "",
-    })
+        },
+        additionalFeatures: {
+            waterResistant: false,
+            padded: false,
+            antiBacterial: false,
+        },
+        addedTimestamp: "",
+    });
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -48,6 +51,7 @@ function AddSock() {
         const submission = {
             ...sockData,
             addedTimestamp: new Date().toISOString(),
+            userId: user.uid
         };
 
         try {
@@ -73,9 +77,11 @@ function AddSock() {
         }
     };
 
-
     return (
         <div className="row">
+            <div>
+                {user ? <h5>Welcome, {user.username}! Your UID is {user.uid}</h5> : <h1>Please log in.</h1>}
+            </div>
             <div className="col-4">
                 <form onSubmit={handleSubmit} className="p-3">
                     <div className="form-group">
@@ -85,7 +91,7 @@ function AddSock() {
                             className="form-control"
                             id="userId"
                             name="userId"
-                            value={sockData.userId}
+                            value={user.uid}
                             onChange={handleChange}
                         />
                     </div>
